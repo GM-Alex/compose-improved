@@ -1,29 +1,20 @@
 sudo: required
-
 language: python
-
 matrix:
   include:
-    - os: linux
-      services:
-      - docker
-    - os: osx
-      language: generic
-
-install: ./script/travis/install
-
+  - os: linux
+    services:
+    - docker
+  - os: osx
+    language: generic
+install: "./script/travis/install"
 script:
   - ./script/travis/ci
   - ./script/travis/build-binary
-
-before_deploy:
-  - "./script/travis/render-bintray-config.py < ./script/travis/bintray.json.tmpl > ./bintray.json"
-
 deploy:
-  provider: bintray
-  user: docker-compose-roleuser
-  key: '$BINTRAY_API_KEY'
-  file: ./bintray.json
-  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: fwi4YTwUX+4P++HMXPTzLcY4UP2lUVX0CaIve8wUptufgKQBFDDMfF1IhVZzSgZ0L7piVyVk/nSLwEgdO05IavxZUoGJ8afl+KL+L/UmDrdOMgSCJnu+RFz98UqhXC7T5/tHR3RV59rcvrrlDnj+term1T3RrV8hvh9vqe/U0E8/uEe53t6yQoA8IMfQLL0ozi5ZcxTCF4pNT36b+l6lXZBWCh43LjK2S3Q+j9OWbqqhibOe5XQvnocRumviLPQePj4gwTPP4lvU4zzeTKqDqTm/QT7Jzewzsy+Jrjvo+EMGYXPYrC12AnZU0zFQNDgsbOp460phceU0kJHEECoO2TvGE8qjQ86m1arkNIiHm/3AWufKP54rIl4vPt/yjSstki9HWMuX7ZgnSdsglwdUr/wHjFGm147lHA6Zz8cMkNttJshu/9ZCY/xYUIrA73J5v+V5K98n9VMOEMyfRNETUPQaCdnh23Ae6Pvrh/497aaiwAkPEjPQtYA6hqEVUJgW8y+L+wXmhKeQ2l5cEmvPVlwqdW2jMwBg8yYzUrPaVL0fYFZx/SP7sXtlyY5Xsz+tSyKXQg6zUaVZRyYUyXXovv7UuwrmbpVQT39n6TPEB+/31YaJumNCs5lSl9XWSkff2uWlgbrBbSyj+4mCLihoOqWNWEVJKN03+MD0tOJfg+U=
+  file: "./dist/*"
   on:
-    all_branches: true
+    repo: GM-Alex/compose-improved
